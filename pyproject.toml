@@ -1,0 +1,41 @@
+[project]
+name = "tinkertown-technician"
+version = "0.1.0"
+description = "Tinkertown Technician -- Battlecry: Fix your Heartstone Deck Tracker"
+readme = "README.md"
+authors = [
+    {name = "Chris Wesseling", email = "chris.wesseling@xs4all.nl"},
+]
+dependencies = [
+    "requests",
+    "typer",
+    "watchdog",
+]
+requires-python = ">=3.8"
+dynamic = ["classifiers"]
+license = {text = "GPL-3.0-or-later"}
+dev-dependencies = [
+    "flake8",
+    "isort",
+    "mypy",
+    "pre-commit",
+    "pytest",
+    "pytest-cov",
+]
+
+[project.urls]
+homepage = ""
+
+[project.scripts]
+ttt = "tinkertown.__main__:app"
+
+[build-system]
+requires = ["pdm-pep517"]
+build-backend = "pdm.pep517.api"
+
+[tool]
+[tool.pdm]
+[[tool.pdm.source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
