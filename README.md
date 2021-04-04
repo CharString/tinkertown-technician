@@ -3,9 +3,11 @@
 ## Developing
 ```sh
 # Install dependencies
-pipenv install --dev
+pip install --user pipx
+pipx install pdm
+pdm install --dev
 
 # Setup pre-commit and pre-push hooks
-pipenv run pre-commit install -t pre-commit
-pipenv run pre-commit install -t pre-push
+pdm run pre-commit install -t pre-commit
+pdm run pre-commit install -t pre-push
 ```
