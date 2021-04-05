@@ -24,7 +24,7 @@ dev-dependencies = [
 ]
 
 [project.urls]
-homepage = ""
+homepage = "https://github.com/CharString/tinkertown-technician"
 
 [project.scripts]
 ttt = "tinkertown.__main__:app"
