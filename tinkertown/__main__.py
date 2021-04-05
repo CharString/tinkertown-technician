@@ -19,9 +19,15 @@ class EventHandler(FileSystemEventHandler):
 
 
 @app.command()
-def main(wineprefix: str) -> None:
+def main(wineprefix: Path) -> None:
+    """
+    Tinkertown Technician -- Battlecry: Fix your Heartstone Deck Tracker
+
+    Workaround for
+     - https://github.com/HearthSim/Hearthstone-Deck-Tracker/issues/4234
+    """
     try:
-        path = next(Path(wineprefix).glob('**/HearthstoneDeckTracker/Images'))
+        path = next(wineprefix.glob('**/HearthstoneDeckTracker/Images'))
     except StopIteration:
         typer.echo(f'No decktracker found under {wineprefix}', err=True)
         raise typer.Exit(1)
