@@ -35,6 +35,9 @@ build-backend = "pdm.pep517.api"
 
 [tool]
 [tool.pdm]
+[tool.pdm.scripts]
+dev = {"shell" = "pdm install --dev && pdm run pre-commit install -t pre-commit && pdm run pre-commit install -t pre-push"}
+
 [[tool.pdm.source]]
 url = "https://pypi.org/simple"
 verify_ssl = true

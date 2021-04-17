@@ -129,5 +129,5 @@ dmypy.json
 .pyre/
 
 .*.swp
-
+.pdm.toml
 # End of https://www.gitignore.io/api/python
