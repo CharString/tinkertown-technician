@@ -6,14 +6,14 @@ repos:
     name: isort
     stages: [commit]
     language: system
-    entry: pipenv run isort
+    entry: pdm run isort
     types: [python]
 
   - id: flake8
     name: flake8
     stages: [commit]
     language: system
-    entry: pipenv run flake8
+    entry: pdm run flake8
     types: [python]
     exclude: setup.py
 
@@ -21,7 +21,7 @@ repos:
     name: mypy
     stages: [commit]
     language: system
-    entry: pipenv run mypy
+    entry: pdm run mypy
     types: [python]
     require_serial: true
 
@@ -29,7 +29,7 @@ repos:
     name: pytest
     stages: [commit]
     language: system
-    entry: pipenv run pytest
+    entry: pdm run pytest
     types: [python]
     pass_filenames: false
 
@@ -37,6 +37,6 @@ repos:
     name: pytest
     stages: [push]
     language: system
-    entry: pipenv run pytest --cov --cov-fail-under=100
+    entry: pdm run pytest --cov --cov-fail-under=100
     types: [python]
     pass_filenames: false
