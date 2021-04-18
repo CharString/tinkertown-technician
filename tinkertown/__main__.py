@@ -19,7 +19,9 @@ class EventHandler(FileSystemEventHandler):
 
 
 @app.command()
-def main(wineprefix: Path) -> None:
+def main(
+    path: Path = typer.Argument('./', envvar='WINEPREFIX'),
+) -> None:
     """
     Tinkertown Technician -- Battlecry: Fix your Heartstone Deck Tracker
 
@@ -27,9 +29,9 @@ def main(wineprefix: Path) -> None:
      - https://github.com/HearthSim/Hearthstone-Deck-Tracker/issues/4234
     """
     try:
-        path = next(wineprefix.glob('**/HearthstoneDeckTracker/Images'))
+        path = next(path.glob('**/HearthstoneDeckTracker/Images'))
     except StopIteration:
-        typer.echo(f'No decktracker found under {wineprefix}', err=True)
+        typer.echo(f'No decktracker found under {path}', err=True)
         raise typer.Exit(1)
 
     tasks = [
@@ -40,6 +42,7 @@ def main(wineprefix: Path) -> None:
     def make_task(d, f):
         def task():
             f(in_progress(path / d), path / d)
+
         return task
 
     handler = EventHandler(taskmap={
@@ -58,7 +61,7 @@ def main(wineprefix: Path) -> None:
         observer.join()
     except KeyboardInterrupt:
         observer.stop()
-        raise typer.Abort()
+        raise typer.Exit()
 
 
 if __name__ == '__main__':

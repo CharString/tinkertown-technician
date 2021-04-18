@@ -1,9 +1,6 @@
-from pathlib import Path
-
 from tinkertown.technician import (download_cards, download_portraits,
                                    in_progress, readcache,)
 
-PWD = Path(__file__).parent
 CARDS = [
     'BT_723.png',
     'BT_252.png',
@@ -11,13 +8,14 @@ CARDS = [
 ]
 
 
-def test_read():
-    with (PWD / 'Cache.xml').open() as f:
+def test_readcache(cache_xml):
+    with cache_xml.open() as f:
         assert list(readcache(f)) == CARDS
 
 
-def test_in_progress():
-    imgs = list(in_progress(PWD))
+def test_in_progress(wineprefix):
+    card_images_dir = next(wineprefix.glob('**/Images/CardImages'))
+    imgs = list(in_progress(card_images_dir))
     assert 'not_empty.png' not in imgs
     assert 'test.png' in imgs
 
