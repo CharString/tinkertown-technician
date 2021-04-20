@@ -1,3 +1,10 @@
+import time
+from subprocess import Popen
+
+import pytest
+from psutil import Process
+
+from tinkertown import technician
 from tinkertown.technician import (download_cards, download_portraits,
                                    in_progress, readcache,)
 
@@ -31,3 +38,30 @@ def test_download_portraits(tmp_path):
     download_portraits(bgs_cards, tmp_path)
     for img in bgs_cards:
         assert (tmp_path / img).stat().st_size
+
+
+def test_running_decktracker_finds_nothing(mock_decktracker):
+    assert technician.running_decktracker() is None
+
+
+def test_running_decktracker_finds_tracker(mock_decktracker):
+    p = Popen([str(mock_decktracker)])
+    time.sleep(0.5)  # Wait for proctitle to be set
+    tracker = technician.running_decktracker()
+    try:
+        assert Process(pid=p.pid).name() == mock_decktracker.name
+        assert tracker
+    finally:
+        p.terminate()
+
+
+def test_start_decktracker(wineprefix, mock_decktracker):
+    tracker = technician.start_decktracker(wineprefix, wine='python')
+    assert tracker.status() in ('sleeping', 'running')
+    tracker.terminate()
+
+
+def test_start_decktracker_raises_runtimeerror(wineprefix):
+    "It should raise RuntimeError if exe not found"
+    with pytest.raises(RuntimeError):
+        technician.start_decktracker(wineprefix)

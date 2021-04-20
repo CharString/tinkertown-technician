@@ -1,0 +1,8 @@
+#!/bin/env python
+import setproctitle
+setproctitle.setproctitle('Mock Decktracker')
+from time import sleep
+from sys import argv
+
+sec = int(argv[1]) if len(argv) > 1 else 60
+sleep(sec)

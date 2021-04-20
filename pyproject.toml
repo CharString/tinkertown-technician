@@ -1,6 +1,6 @@
 [project]
 name = "tinkertown-technician"
-version = "0.1.0"
+version = "0.2.0"
 description = "Tinkertown Technician -- Battlecry: Fix your Heartstone Deck Tracker"
 readme = "README.md"
 authors = [
@@ -10,8 +10,10 @@ dependencies = [
     "requests",
     "typer",
     "watchdog",
+    "psutil~=5.8",
+    "toml~=0.10",
 ]
-requires-python = ">=3.8"
+requires-python = ">=3.7"
 dynamic = ["classifiers"]
 license = {text = "GPL-3.0-or-later"}
 dev-dependencies = [
@@ -21,6 +23,7 @@ dev-dependencies = [
     "pre-commit",
     "pytest",
     "pytest-cov",
+    "setproctitle~=1.2",
 ]
 
 [project.urls]

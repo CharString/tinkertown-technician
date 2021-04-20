@@ -1,6 +1,5 @@
 [run]
 source = tinkertown
-omit = tinkertown/__main__.py
 
 [report]
 exclude_lines =

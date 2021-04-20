@@ -1,9 +1,13 @@
 import xml.etree.ElementTree as ET
-from os import PathLike
+from os import PathLike, environ
 from pathlib import Path
+from subprocess import DEVNULL, Popen
 from typing import IO, Callable, Iterable, List, Union
 
+import psutil
 from requests import get
+
+HDT_EXE = "Hearthstone Deck Tracker.exe"
 
 
 def readcache(xml: Union[PathLike, IO]) -> Union[List, List[str]]:
@@ -56,3 +60,26 @@ def download_portraits(card_imgs: Iterable[str],
                        ) -> None:
     "Download small images shown in Battlegrounds opponent boards"
     return download(card_imgs, destination, url_mapper=cardportrait_url)
+
+
+def running_decktracker() -> Union[psutil.Process, None]:
+    """Return a `psutil.Process` of the running Decktracker
+    if one exist"""
+    for p in psutil.process_iter():
+        if p.name() == HDT_EXE:
+            return p
+    return None
+
+
+def start_decktracker(wineprefix: Path, wine='wine') -> psutil.Process:
+    env = environ.copy()
+    env['WINEPREFIX'] = str(wineprefix)
+    try:
+        hdt = next(wineprefix.glob(f"**/{HDT_EXE}"))
+    except StopIteration:
+        raise RuntimeError(f"Error: {HDT_EXE} not found under {wineprefix}")
+    return psutil.Process(
+        pid=Popen([wine, str(hdt)],
+                  env=env, stdout=DEVNULL, stderr=DEVNULL
+                  ).pid
+    )
