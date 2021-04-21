@@ -1,6 +1,6 @@
 [project]
 name = "tinkertown-technician"
-version = "0.2.0"
+version = "0.2.1"
 description = "Tinkertown Technician -- Battlecry: Fix your Heartstone Deck Tracker"
 readme = "README.md"
 authors = [

@@ -65,3 +65,18 @@ def test_start_decktracker_raises_runtimeerror(wineprefix):
     "It should raise RuntimeError if exe not found"
     with pytest.raises(RuntimeError):
         technician.start_decktracker(wineprefix)
+
+
+def test_start_decktracker_searches_both_names(tmp_path):
+    "The executable has changed names over the years"
+    with pytest.raises(RuntimeError):
+        technician.start_decktracker(tmp_path)
+    for exe in [
+            "Hearthstone Deck Tracker.exe",
+            "HearthstoneDeckTracker.exe",
+    ]:
+        f = (tmp_path / exe)
+        f.open('w').close()
+        process = technician.start_decktracker(tmp_path, 'echo')
+        assert process.pid
+        f.unlink()

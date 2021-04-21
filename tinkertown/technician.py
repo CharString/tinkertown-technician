@@ -7,7 +7,7 @@ from typing import IO, Callable, Iterable, List, Union
 import psutil
 from requests import get
 
-HDT_EXE = "Hearthstone Deck Tracker.exe"
+HDT_EXE = "Hearthstone*Deck*Tracker.exe"
 
 
 def readcache(xml: Union[PathLike, IO]) -> Union[List, List[str]]:
@@ -66,7 +66,7 @@ def running_decktracker() -> Union[psutil.Process, None]:
     """Return a `psutil.Process` of the running Decktracker
     if one exist"""
     for p in psutil.process_iter():
-        if p.name() == HDT_EXE:
+        if p.name() in (HDT_EXE.replace("*", s) for s in [" ", ""]):
             return p
     return None
 

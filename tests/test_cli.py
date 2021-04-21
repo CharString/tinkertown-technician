@@ -97,26 +97,24 @@ def test_empty_evenhandler():
     assert handler.on_modified(Mock()) is None
 
 
-def test_launches_decktracker(decktracker_mgmt):
+def test_relaunch_eaunches_decktracker(decktracker_mgmt):
     start, running = decktracker_mgmt
     running.return_value = None
-
-    runner.invoke(__main__.app)
-
+    runner.invoke(__main__.app, ['--relaunch'])
     start.assert_called_once_with(Path("."))
 
 
-def test_fails_when_no_decktracker_found(decktracker_mgmt):
+def test_relaunch_fails_when_no_decktracker_found(decktracker_mgmt):
     start, running = decktracker_mgmt
     running.return_value = None
     start.side_effect = RuntimeError('Error')
-    result = runner.invoke(__main__.app)
+    result = runner.invoke(__main__.app, ['--relaunch'])
     assert result.exit_code == 2
 
 
-def test_doesnt_launch_when_already_runs(decktracker_mgmt):
+def test_relaunch_doesnt_launch_when_already_runs(decktracker_mgmt):
     start, running = decktracker_mgmt
-    runner.invoke(__main__.app)
+    runner.invoke(__main__.app, ['--relaunch'])
     running.assert_called()
     start.assert_not_called()
 
@@ -130,5 +128,5 @@ def test_relaunch_zombie(decktracker_mgmt, watchdog_observer):
         KeyboardInterrupt(),
     ]
     tracker.status.return_value = "zombie"
-    runner.invoke(__main__.app)
+    runner.invoke(__main__.app, ['--relaunch'])
     start.assert_called_once()

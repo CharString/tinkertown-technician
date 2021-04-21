@@ -45,6 +45,10 @@ def safe_config(config: dict) -> None:
 @app.command()
 def main(
     path: Path = typer.Argument(default_path, envvar='WINEPREFIX'),
+    relaunch: bool = typer.Option(
+        False,
+        help="EXPERIMENTAL relaunch Decktracker when it hangs",
+    ),
 ) -> None:
     """
     Tinkertown Technician -- Battlecry: Fix your Heartstone Deck Tracker
@@ -85,10 +89,11 @@ def main(
     typer.echo(f'Monitoring {image_path} for changes. Stop with CTRL-C.')
     observer.start()
     try:
-        tracker = running_decktracker() or start_decktracker(path)
+        if relaunch:
+            tracker = running_decktracker() or start_decktracker(path)
         while True:
             observer.join(10)
-            if tracker.status() == "zombie":
+            if relaunch and tracker.status() == "zombie":
                 tracker.terminate()
                 tracker = start_decktracker(path)
     except RuntimeError as e:
